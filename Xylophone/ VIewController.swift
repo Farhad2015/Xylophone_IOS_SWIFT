@@ -7,9 +7,11 @@
 //
 
 import UIKit
-import AudioToolbox
+import AVFoundation
 
-class ViewController: UIViewController{
+class ViewController: UIViewController, AVAudioPlayerDelegate {
+    
+    var audioPlayer : AVAudioPlayer!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,42 +20,20 @@ class ViewController: UIViewController{
 
 
     @IBAction func notePressed(_ sender: UIButton) {
-        if sender.tag == 1 {
-            let noteOneURL = Bundle.main.url(forResource: "note1", withExtension: "wav")
-            var mySound: SystemSoundID = 0
-            AudioServicesCreateSystemSoundID(noteOneURL! as CFURL, &mySound)
-            AudioServicesPlaySystemSound(mySound);
-        } else if sender.tag == 2 {
-            let noteTwoURL = Bundle.main.url(forResource: "note2", withExtension: "wav")
-            var mySound: SystemSoundID = 0
-            AudioServicesCreateSystemSoundID(noteTwoURL! as CFURL, &mySound)
-            AudioServicesPlaySystemSound(mySound);
-        } else if sender.tag == 3 {
-            let noteThreeURL = Bundle.main.url(forResource: "note3", withExtension: "wav")
-            var mySound: SystemSoundID = 0
-            AudioServicesCreateSystemSoundID(noteThreeURL! as CFURL, &mySound)
-            AudioServicesPlaySystemSound(mySound);
-        } else if sender.tag == 4 {
-            let noteFourURL = Bundle.main.url(forResource: "note4", withExtension: "wav")
-            var mySound: SystemSoundID = 0
-            AudioServicesCreateSystemSoundID(noteFourURL! as CFURL, &mySound)
-            AudioServicesPlaySystemSound(mySound);
-        } else if sender.tag == 5 {
-            let noteFiveURL = Bundle.main.url(forResource: "note5", withExtension: "wav")
-            var mySound: SystemSoundID = 0
-            AudioServicesCreateSystemSoundID(noteFiveURL! as CFURL, &mySound)
-            AudioServicesPlaySystemSound(mySound);
-        } else if sender.tag == 6 {
-            let noteSixURL = Bundle.main.url(forResource: "note6", withExtension: "wav")
-            var mySound: SystemSoundID = 0
-            AudioServicesCreateSystemSoundID(noteSixURL! as CFURL, &mySound)
-            AudioServicesPlaySystemSound(mySound);
-        } else if sender.tag == 7 {
-            let noteSevenURL = Bundle.main.url(forResource: "note7", withExtension: "wav")
-            var mySound: SystemSoundID = 0
-            AudioServicesCreateSystemSoundID(noteSevenURL! as CFURL, &mySound)
-            AudioServicesPlaySystemSound(mySound);
+        let buttonPressed = sender.tag
+        playSound(soundNumber: buttonPressed)
+    }
+    
+    //Play Sound
+    func playSound(soundNumber sn : Int) {
+        let soundURL = Bundle.main.url(forResource: "note\(sn)", withExtension: "wav")
+        
+        do {
+            audioPlayer = try AVAudioPlayer(contentsOf: soundURL!)
+        } catch {
+            print(error)
         }
+        audioPlayer.play()
     }
     
 }
